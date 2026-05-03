@@ -3,6 +3,23 @@ import { useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { ChevronLeft, Play, Zap, AlertTriangle } from "lucide-react";
+import { trpc } from "@/lib/trpc";
+import { toast } from "sonner";
+
+const playSimulationSound = (type: string) => {
+  const soundMap: Record<string, string> = {
+    'gunshot': '/sounds/gunshot.mp3',
+    'alarm': '/sounds/alarm.mp3',
+    'glass': '/sounds/glass.mp3',
+    'scream': '/sounds/scream.mp3'
+  };
+
+  const url = soundMap[type];
+  if (url) {
+    const audio = new Audio(url);
+    audio.play().catch(e => console.error("Error playing sound:", e));
+  }
+};
 
 interface SimulationResult {
   eventType: string;
@@ -49,9 +66,13 @@ export default function Simulation() {
   const [selectedScenario, setSelectedScenario] = useState<string | null>(null);
   const [result, setResult] = useState<SimulationResult | null>(null);
   const [isRunning, setIsRunning] = useState(false);
+  const sendSmsMutation = trpc.alerts.sendSms.useMutation();
 
   const runSimulation = async (scenarioId: string) => {
     setIsRunning(true);
+    // Play the exact sound immediately when clicked
+    playSimulationSound(scenarioId);
+    
     setResult({
       eventType: scenarios.find(s => s.id === scenarioId)?.name || "",
       confidence: 0,
@@ -87,17 +108,32 @@ export default function Simulation() {
     setResult({
       eventType: scenario?.name || "",
       confidence: scenario?.expectedConfidence || 90,
-      riskScore: 92,
+      riskScore: 75,
       detectionTime: 0.23,
       actions,
       status: "complete"
     });
 
     setIsRunning(false);
+
+    try {
+      await sendSmsMutation.mutateAsync({
+        mobileNumber: "+919050500171",
+        threatType: scenario?.name || "Simulated Threat",
+        riskScore: 75
+      });
+      toast.success(`Critical Alert SMS sent to +919050500171`);
+    } catch (e) {
+      toast.error("Failed to send alert SMS");
+    }
   };
 
   return (
-    <div className="min-h-screen bg-background text-foreground">
+    <div className="min-h-screen bg-background text-foreground relative overflow-x-hidden">
+      {/* Blinking Red/Orange Alert Overlay for running simulation */}
+      {isRunning && (
+        <div className="pointer-events-none fixed inset-0 z-50 animate-pulse bg-gradient-to-br from-red-500/15 via-orange-500/10 to-red-600/15 transition-opacity duration-300" />
+      )}
       {/* Header */}
       <header className="border-b border-border bg-card/50 sticky top-0 z-40">
         <div className="container mx-auto px-4 py-6 flex items-center gap-4">

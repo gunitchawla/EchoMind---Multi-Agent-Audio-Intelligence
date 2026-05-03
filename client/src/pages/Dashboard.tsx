@@ -29,10 +29,10 @@ const threatTimelineData = [
 ];
 
 const threatAlerts = [
-  { id: 1, type: "Gunshot", confidence: 92, timestamp: "14:32:15", sensor: "Sensor-05", severity: "critical" },
-  { id: 2, type: "Glass Break", confidence: 87, timestamp: "14:28:42", sensor: "Sensor-12", severity: "high" },
-  { id: 3, type: "Alarm", confidence: 95, timestamp: "14:25:30", sensor: "Sensor-08", severity: "high" },
-  { id: 4, type: "Scream", confidence: 78, timestamp: "14:20:15", sensor: "Sensor-03", severity: "medium" }
+  { id: 1, type: "Gunshot", confidence: 79, timestamp: "14:32:15", sensor: "Sensor-05", severity: "high" },
+  { id: 2, type: "Glass Break", confidence: 72, timestamp: "14:28:42", sensor: "Sensor-12", severity: "medium" },
+  { id: 3, type: "Alarm", confidence: 68, timestamp: "14:25:30", sensor: "Sensor-08", severity: "high" },
+  { id: 4, type: "Scream", confidence: 65, timestamp: "14:20:15", sensor: "Sensor-03", severity: "medium" }
 ];
 
 export default function Dashboard() {
@@ -143,8 +143,8 @@ export default function Dashboard() {
                 <AreaChart data={waveformData}>
                   <defs>
                     <linearGradient id="colorAmplitude" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="5%" stopColor="rgba(0, 255, 255, 0.8)" stopOpacity={0.8}/>
-                      <stop offset="95%" stopColor="rgba(0, 255, 255, 0)" stopOpacity={0}/>
+                      <stop offset="5%" stopColor="rgba(0, 255, 255, 0.8)" stopOpacity={0.8} />
+                      <stop offset="95%" stopColor="rgba(0, 255, 255, 0)" stopOpacity={0} />
                     </linearGradient>
                   </defs>
                   <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.1)" />
@@ -240,11 +240,10 @@ export default function Dashboard() {
                 <div key={alert.id} className="glass border-border p-4 rounded-lg flex items-center justify-between hover:border-accent/40 transition-colors">
                   <div className="flex-1">
                     <div className="flex items-center gap-3">
-                      <div className={`w-3 h-3 rounded-full ${
-                        alert.severity === "critical" ? "bg-red-500" :
+                      <div className={`w-3 h-3 rounded-full ${alert.severity === "critical" ? "bg-red-500" :
                         alert.severity === "high" ? "bg-orange-500" :
-                        "bg-yellow-500"
-                      } animate-pulse`}></div>
+                          "bg-yellow-500"
+                        } animate-pulse`}></div>
                       <div>
                         <div className="font-semibold">{alert.type}</div>
                         <div className="text-xs text-muted-foreground">{alert.sensor} • {alert.timestamp}</div>

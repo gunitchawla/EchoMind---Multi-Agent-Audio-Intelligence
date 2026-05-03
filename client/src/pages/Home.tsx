@@ -11,7 +11,7 @@ export default function Home() {
       {/* Navigation */}
       <nav className="sticky top-0 z-50 bg-background/80 backdrop-blur-md border-b border-border">
         <div className="container mx-auto px-4 py-4 flex justify-between items-center">
-          <div className="text-2xl font-bold gradient-text">Audio Intelligence Security</div>
+          <div className="text-2xl font-bold gradient-text">EchoMind</div>
           <div className="flex gap-6 items-center">
             <button onClick={() => setLocation("/architecture")} className="text-sm hover:text-accent transition-colors">Architecture</button>
             <button onClick={() => setLocation("/dashboard")} className="text-sm hover:text-accent transition-colors">Dashboard</button>
@@ -211,7 +211,7 @@ export default function Home() {
       {/* Footer */}
       <footer className="border-t border-border py-8 px-4 bg-card/50">
         <div className="container mx-auto max-w-6xl text-center text-muted-foreground">
-          <p>Audio Intelligence Security Platform &copy; 2026. Advanced AI-powered threat detection for smart cities.</p>
+          <p>EchoMind - Multi Agent Audio Intelligent System &copy; 2026. Advanced AI-powered threat detection for smart cities.</p>
         </div>
       </footer>
     </div>

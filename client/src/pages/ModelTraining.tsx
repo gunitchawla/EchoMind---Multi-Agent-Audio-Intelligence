@@ -43,7 +43,7 @@ export default function ModelTraining() {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [datasets, setDatasets] = useState<TrainingDataset[]>(() => {
     if (typeof window !== 'undefined') {
-      const saved = localStorage.getItem('audio_intelligence_datasets_v2');
+      const saved = localStorage.getItem('audio_intelligence_datasets_v3');
       if (saved) {
         try {
           const parsed = JSON.parse(saved);
@@ -102,7 +102,7 @@ export default function ModelTraining() {
 
   const [models, setModels] = useState<TrainingModel[]>(() => {
     if (typeof window !== 'undefined') {
-      const saved = localStorage.getItem('audio_intelligence_models_v2');
+      const saved = localStorage.getItem('audio_intelligence_models_v3');
       if (saved) {
         try {
           const parsed = JSON.parse(saved);
@@ -115,10 +115,10 @@ export default function ModelTraining() {
         id: "model-1",
         version: 1,
         createdDate: new Date(Date.now() - 25 * 24 * 60 * 60 * 1000),
-        accuracy: 95.8,
-        precision: 96.1,
-        recall: 94.5,
-        f1Score: 95.3,
+        accuracy: 72.8,
+        precision: 73.1,
+        recall: 71.5,
+        f1Score: 72.3,
         trainingTime: 7200,
         samplesUsed: 25000,
         status: "deployed",
@@ -128,10 +128,10 @@ export default function ModelTraining() {
         id: "model-2",
         version: 2,
         createdDate: new Date(Date.now() - 12 * 24 * 60 * 60 * 1000),
-        accuracy: 98.4,
-        precision: 98.7,
-        recall: 97.9,
-        f1Score: 98.3,
+        accuracy: 76.4,
+        precision: 77.7,
+        recall: 75.9,
+        f1Score: 76.3,
         trainingTime: 10800,
         samplesUsed: 38000,
         status: "deployed",
@@ -141,10 +141,10 @@ export default function ModelTraining() {
         id: "model-3",
         version: 3,
         createdDate: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000),
-        accuracy: 99.6,
-        precision: 99.8,
-        recall: 99.4,
-        f1Score: 99.6,
+        accuracy: 79.6,
+        precision: 79.8,
+        recall: 79.4,
+        f1Score: 79.6,
         trainingTime: 18000,
         samplesUsed: 51000,
         status: "training",
@@ -154,11 +154,11 @@ export default function ModelTraining() {
   });
 
   useEffect(() => {
-    localStorage.setItem('audio_intelligence_datasets_v2', JSON.stringify(datasets));
+    localStorage.setItem('audio_intelligence_datasets_v3', JSON.stringify(datasets));
   }, [datasets]);
 
   useEffect(() => {
-    localStorage.setItem('audio_intelligence_models_v2', JSON.stringify(models));
+    localStorage.setItem('audio_intelligence_models_v3', JSON.stringify(models));
   }, [models]);
 
   const [isTraining, setIsTraining] = useState(false);
@@ -166,16 +166,16 @@ export default function ModelTraining() {
   const [selectedModel, setSelectedModel] = useState<TrainingModel | null>(models[1]);
 
   const performanceData: ModelPerformance[] = [
-    { soundType: "Gunshot", accuracy: 99.8, detections: 15450, falsePositives: 3 },
-    { soundType: "Glass Break", accuracy: 99.1, detections: 12280, falsePositives: 12 },
-    { soundType: "Alarm", accuracy: 99.4, detections: 14300, falsePositives: 8 },
-    { soundType: "Scream", accuracy: 98.8, detections: 10170, falsePositives: 15 }
+    { soundType: "Gunshot", accuracy: 79.8, detections: 15450, falsePositives: 3901 },
+    { soundType: "Glass Break", accuracy: 78.1, detections: 12280, falsePositives: 3450 },
+    { soundType: "Alarm", accuracy: 79.4, detections: 14300, falsePositives: 3712 },
+    { soundType: "Scream", accuracy: 77.8, detections: 10170, falsePositives: 2901 }
   ];
 
   const accuracyTrend = [
-    { version: 1, accuracy: 95.8, precision: 96.1, recall: 94.5 },
-    { version: 2, accuracy: 98.4, precision: 98.7, recall: 97.9 },
-    { version: 3, accuracy: 99.6, precision: 99.8, recall: 99.4 }
+    { version: 1, accuracy: 72.8, precision: 73.1, recall: 71.5 },
+    { version: 2, accuracy: 76.4, precision: 77.7, recall: 75.9 },
+    { version: 3, accuracy: 79.6, precision: 79.8, recall: 79.4 }
   ];
 
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -208,10 +208,10 @@ export default function ModelTraining() {
             id: `model-${Date.now()}`,
             version: models.length + 1,
             createdDate: new Date(),
-            accuracy: 97.2 + Math.random() * 2,
-            precision: 97.8 + Math.random() * 2,
-            recall: 96.5 + Math.random() * 2,
-            f1Score: 97.1 + Math.random() * 2,
+            accuracy: 75.2 + Math.random() * 4,
+            precision: 75.8 + Math.random() * 4,
+            recall: 74.5 + Math.random() * 4,
+            f1Score: 75.1 + Math.random() * 4,
             trainingTime: 4500,
             samplesUsed: 15000,
             status: "completed",
@@ -233,7 +233,7 @@ export default function ModelTraining() {
         const dataset = prev.find(d => d.id === datasetId);
 
         setModels(prevModels => {
-          const baseAccuracy = 85 + Math.random() * 14;
+          const baseAccuracy = 72 + Math.random() * 6;
           const newModel: TrainingModel = {
             id: `model-${Date.now()}`,
             version: prevModels.length + 1,
@@ -632,7 +632,7 @@ export default function ModelTraining() {
                     <LineChart data={accuracyTrend}>
                       <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.1)" />
                       <XAxis dataKey="version" stroke="rgba(255,255,255,0.3)" />
-                      <YAxis stroke="rgba(255,255,255,0.3)" domain={[80, 100]} />
+                      <YAxis stroke="rgba(255,255,255,0.3)" domain={[60, 90]} />
                       <Tooltip contentStyle={{ backgroundColor: "rgba(0,0,0,0.8)", border: "1px solid rgba(0,255,255,0.3)" }} />
                       <Legend />
                       <Line type="monotone" dataKey="accuracy" stroke="rgba(0, 255, 255, 1)" strokeWidth={2} />
@@ -653,7 +653,7 @@ export default function ModelTraining() {
                     <BarChart data={performanceData}>
                       <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.1)" />
                       <XAxis dataKey="soundType" stroke="rgba(255,255,255,0.3)" />
-                      <YAxis stroke="rgba(255,255,255,0.3)" domain={[85, 100]} />
+                      <YAxis stroke="rgba(255,255,255,0.3)" domain={[60, 85]} />
                       <Tooltip contentStyle={{ backgroundColor: "rgba(0,0,0,0.8)", border: "1px solid rgba(0,255,255,0.3)" }} />
                       <Bar dataKey="accuracy" fill="rgba(0, 255, 255, 0.7)" />
                     </BarChart>

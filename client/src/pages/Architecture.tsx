@@ -9,6 +9,7 @@ interface ArchitectureModule {
   name: string;
   description: string;
   details: string[];
+  connectsTo: string[];
   color: string;
 }
 
@@ -24,6 +25,7 @@ const modules: ArchitectureModule[] = [
       "Call Recording Systems",
       "Smart Device Audio Feeds"
     ],
+    connectsTo: ["preprocessing"],
     color: "from-blue-500 to-cyan-500"
   },
   {
@@ -37,6 +39,7 @@ const modules: ArchitectureModule[] = [
       "Audio Segmentation",
       "Feature Extraction (MFCC, Spectrogram, Chroma)"
     ],
+    connectsTo: ["understanding", "knowledge"],
     color: "from-purple-500 to-pink-500"
   },
   {
@@ -50,6 +53,7 @@ const modules: ArchitectureModule[] = [
       "Acoustic Scene Classification",
       "Confidence Scoring"
     ],
+    connectsTo: ["multiagent", "explainable"],
     color: "from-cyan-500 to-blue-500"
   },
   {
@@ -62,6 +66,7 @@ const modules: ArchitectureModule[] = [
       "Threat Detection Agent",
       "Decision Coordination Agent"
     ],
+    connectsTo: ["decision", "knowledge"],
     color: "from-green-500 to-emerald-500"
   },
   {
@@ -75,6 +80,7 @@ const modules: ArchitectureModule[] = [
       "Security Policy Engine",
       "Event Correlation Engine"
     ],
+    connectsTo: ["multiagent", "decision"],
     color: "from-orange-500 to-red-500"
   },
   {
@@ -87,6 +93,7 @@ const modules: ArchitectureModule[] = [
       "Feature Importance Visualization",
       "Decision Reasoning Generation"
     ],
+    connectsTo: ["decision", "visualization"],
     color: "from-yellow-500 to-orange-500"
   },
   {
@@ -100,6 +107,7 @@ const modules: ArchitectureModule[] = [
       "Authority Notification",
       "Camera Recording Activation"
     ],
+    connectsTo: ["visualization"],
     color: "from-red-500 to-pink-500"
   },
   {
@@ -113,6 +121,7 @@ const modules: ArchitectureModule[] = [
       "Risk Score Visualization",
       "System Logs & Reports"
     ],
+    connectsTo: [],
     color: "from-indigo-500 to-purple-500"
   }
 ];
@@ -122,6 +131,8 @@ export default function Architecture() {
   const [selectedModule, setSelectedModule] = useState<string | null>(null);
 
   const selected = modules.find(m => m.id === selectedModule);
+  const getModuleName = (id: string) => modules.find(m => m.id === id)?.name ?? id;
+  const getIncomingModules = (id: string) => modules.filter(m => m.connectsTo.includes(id));
 
   return (
     <div className="min-h-screen bg-background text-foreground">
@@ -156,6 +167,11 @@ export default function Architecture() {
                         {module.name}
                       </div>
                       <p className="text-sm text-muted-foreground">{module.description}</p>
+                      {module.connectsTo.length > 0 && (
+                        <p className="text-xs text-accent/80 mt-2">
+                          Connects to: {module.connectsTo.map(getModuleName).join(" -> ")}
+                        </p>
+                      )}
                     </button>
                     {index < modules.length - 1 && (
                       <div className="flex justify-center py-2">
@@ -175,6 +191,21 @@ export default function Architecture() {
                   <p>✓ Multi-agent system coordinates decision-making</p>
                   <p>✓ Explainable AI provides reasoning transparency</p>
                   <p>✓ Alerts trigger automated security responses</p>
+                </div>
+              </div>
+
+              <div className="glass border-accent/20 p-6 rounded-lg">
+                <h3 className="font-semibold text-accent mb-4">Connectivity Map</h3>
+                <div className="space-y-2 text-sm text-muted-foreground">
+                  {modules.map((module) => (
+                    <p key={module.id}>
+                      <span className="text-foreground font-medium">{module.name}</span>
+                      {" -> "}
+                      {module.connectsTo.length > 0
+                        ? module.connectsTo.map(getModuleName).join(" / ")
+                        : "Terminal output layer"}
+                    </p>
+                  ))}
                 </div>
               </div>
             </div>
@@ -201,6 +232,20 @@ export default function Architecture() {
                       </li>
                     ))}
                   </ul>
+                </div>
+
+                <div className="mt-6 space-y-3">
+                  <h4 className="font-semibold text-accent">Connectivity:</h4>
+                  <div className="text-sm text-muted-foreground space-y-1">
+                    <p>
+                      <span className="text-foreground">Incoming:</span>{" "}
+                      {getIncomingModules(selected.id).map((module) => module.name).join(", ") || "None (entry layer)"}
+                    </p>
+                    <p>
+                      <span className="text-foreground">Outgoing:</span>{" "}
+                      {selected.connectsTo.map(getModuleName).join(", ") || "None (final layer)"}
+                    </p>
+                  </div>
                 </div>
 
                 <Button

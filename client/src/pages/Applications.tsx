@@ -131,7 +131,7 @@ export default function Applications() {
         <div className="mb-12 text-center">
           <h2 className="text-4xl font-bold mb-4">Versatile Security Solutions</h2>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-            The Audio Intelligence Security Platform adapts to diverse environments and use cases, from urban surveillance to industrial safety monitoring.
+            The EchoMind Multi Agent Audio Intelligent System adapts to diverse environments and use cases, from urban surveillance to industrial safety monitoring.
           </p>
         </div>
 
