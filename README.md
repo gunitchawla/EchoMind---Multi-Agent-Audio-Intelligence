@@ -98,4 +98,3 @@ EchoMind proudly aligns with the United Nations SDGs:
   <p>Built for the future of smart city security.</p>
 </div>
 
----
